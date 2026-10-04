@@ -3,6 +3,10 @@ import { verifySession, SESSION_COOKIE_NAME } from "@/lib/jwt";
 
 const PUBLIC_PATHS = ["/login", "/api/auth/login", "/api/auth/me"];
 
+function isUnder(pathname: string, prefix: string) {
+  return pathname === prefix || pathname.startsWith(prefix + "/");
+}
+
 function isPublic(pathname: string) {
   if (PUBLIC_PATHS.includes(pathname)) return true;
   if (pathname.startsWith("/_next") || pathname.startsWith("/images") || pathname === "/favicon.ico") return true;
@@ -29,19 +33,19 @@ export async function middleware(req: NextRequest) {
   }
 
   // Role-based area protection (defense in depth - route handlers also enforce this).
-  if (pathname.startsWith("/store") || pathname.startsWith("/api/store")) {
+  if (isUnder(pathname, "/store") || isUnder(pathname, "/api/store")) {
     if (session.role !== "STORE_OWNER") {
       if (isApi) return NextResponse.json({ error: "forbidden", message: "Store owner access required." }, { status: 403 });
       return NextResponse.redirect(new URL("/login?session_expired=1", req.url));
     }
   }
-  if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin")) {
+  if (isUnder(pathname, "/admin") || isUnder(pathname, "/api/admin")) {
     if (session.role !== "ADMIN") {
       if (isApi) return NextResponse.json({ error: "forbidden", message: "Admin access required." }, { status: 403 });
       return NextResponse.redirect(new URL("/login?session_expired=1", req.url));
     }
   }
-  if (pathname.startsWith("/orders") || pathname.startsWith("/checkout") || pathname.startsWith("/cart")) {
+  if (["/orders", "/checkout", "/cart", "/api/orders", "/api/cart"].some((p) => isUnder(pathname, p))) {
     if (session.role !== "CUSTOMER") {
       if (isApi) return NextResponse.json({ error: "forbidden", message: "Customer access required." }, { status: 403 });
       return NextResponse.redirect(new URL("/login?session_expired=1", req.url));

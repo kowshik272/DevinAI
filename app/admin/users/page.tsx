@@ -71,8 +71,8 @@ export default function AdminUsersReportsPage() {
                 <Card>
                   <CardContent>
                     <h3 className="mb-2 text-sm font-semibold text-ink">Orders by city</h3>
-                    {reports.byCity.map((c: any) => (
-                      <div key={c.city} className="flex justify-between text-sm text-muted">
+                    {reports.byCity.map((c: any, i: number) => (
+                      <div key={`${c.city}-${i}`} className="flex justify-between text-sm text-muted">
                         <span>{c.city}</span>
                         <span>{c.count}</span>
                       </div>
@@ -82,8 +82,8 @@ export default function AdminUsersReportsPage() {
                 <Card>
                   <CardContent>
                     <h3 className="mb-2 text-sm font-semibold text-ink">Orders by store</h3>
-                    {reports.byStore.map((s: any) => (
-                      <div key={s.store} className="flex justify-between text-sm text-muted">
+                    {reports.byStore.map((s: any, i: number) => (
+                      <div key={`${s.store}-${i}`} className="flex justify-between text-sm text-muted">
                         <span>{s.store}</span>
                         <span>{s.count}</span>
                       </div>
@@ -104,8 +104,8 @@ export default function AdminUsersReportsPage() {
                 <Card>
                   <CardContent>
                     <h3 className="mb-2 text-sm font-semibold text-ink">Popular products</h3>
-                    {reports.popularProducts.map((p: any) => (
-                      <div key={p.name} className="flex justify-between text-sm text-muted">
+                    {reports.popularProducts.map((p: any, i: number) => (
+                      <div key={`${p.name}-${i}`} className="flex justify-between text-sm text-muted">
                         <span>{p.name}</span>
                         <span>{p.quantity} sold</span>
                       </div>

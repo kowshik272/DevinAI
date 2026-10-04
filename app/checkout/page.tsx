@@ -65,7 +65,10 @@ function CheckoutInner() {
   }, [setValue]);
 
   useEffect(() => {
-    if (!productId) return;
+    if (!productId) {
+      router.replace("/cart");
+      return;
+    }
     setLoading(true);
     fetch(`/api/products/${productId}`)
       .then(async (r) => {
@@ -75,7 +78,7 @@ function CheckoutInner() {
       .then((d) => setProduct(d.product))
       .catch((e) => setLoadError(e.message))
       .finally(() => setLoading(false));
-  }, [productId]);
+  }, [productId, router]);
 
   const totals = useMemo(() => {
     if (!product) return { subtotal: 0, deliveryFee: 0, total: 0 };
