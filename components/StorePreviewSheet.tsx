@@ -39,6 +39,7 @@ export function StorePreviewSheet({
         <SheetContent>
           {!store ? (
             <div className="space-y-3">
+              <SheetTitle className="sr-only">Loading store</SheetTitle>
               <LoadingSkeleton className="h-6 w-1/2" />
               <LoadingSkeleton className="h-56 w-full" />
             </div>

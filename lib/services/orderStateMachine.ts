@@ -65,7 +65,7 @@ export interface TimelineStep {
 
 export interface HistoryEntryLike {
   status: OrderStatus;
-  changedAt: Date;
+  changedAt: Date | string;
   isAdminOverride: boolean;
 }
 
@@ -83,7 +83,7 @@ export function buildTimeline(currentStatus: OrderStatus, history: HistoryEntryL
   const naturalTimestampByStatus = new Map<OrderStatus, Date>();
   for (const h of history) {
     if (!h.isAdminOverride && !naturalTimestampByStatus.has(h.status)) {
-      naturalTimestampByStatus.set(h.status, h.changedAt);
+      naturalTimestampByStatus.set(h.status, new Date(h.changedAt));
     }
   }
 
